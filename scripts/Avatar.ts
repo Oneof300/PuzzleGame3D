@@ -6,8 +6,8 @@ namespace PuzzleGame {
 
     readonly camera: f.ComponentCamera;
     readonly body: f.ComponentRigidbody;
-    readonly movementspeed: number = 20;
-    readonly turnspeed: number = 20;
+    readonly movementspeed: number = 10;
+    readonly turnspeed: number = 100;
 
     private constructor() {
       super("Avatar");
@@ -23,9 +23,11 @@ namespace PuzzleGame {
       this.addComponent(this.camera);
 
       this.body = new f.ComponentRigidbody(70, f.PHYSICS_TYPE.DYNAMIC, f.COLLIDER_TYPE.CAPSULE, f.PHYSICS_GROUP.DEFAULT);
+      this.body.rotationInfluenceFactor = new f.Vector3(0, 0, 0);
+      this.body.friction = 0.01;
       this.addComponent(this.body);
 
-      f.Loop.addEventListener(f.EVENT.LOOP_FRAME, () => this.update);
+      f.Loop.addEventListener(f.EVENT.LOOP_FRAME, event => this.update(event));
     }
     
     public static get instance(): Avatar {
@@ -39,16 +41,16 @@ namespace PuzzleGame {
       let rotateDir: number = 0;
       let moveDir: f.Vector2 = f.Vector2.ZERO();
       if (f.Keyboard.isPressedOne([f.KEYBOARD_CODE.W, f.KEYBOARD_CODE.ARROW_UP])) {
-        moveDir.x += 1;
-      }
-      if (f.Keyboard.isPressedOne([f.KEYBOARD_CODE.A, f.KEYBOARD_CODE.ARROW_LEFT])) {
         moveDir.y += 1;
       }
+      if (f.Keyboard.isPressedOne([f.KEYBOARD_CODE.A, f.KEYBOARD_CODE.ARROW_LEFT])) {
+        moveDir.x -= 1;
+      }
       if (f.Keyboard.isPressedOne([f.KEYBOARD_CODE.S, f.KEYBOARD_CODE.ARROW_DOWN])) {
-        moveDir.x += -1;
+        moveDir.y -= 1;
       }
       if (f.Keyboard.isPressedOne([f.KEYBOARD_CODE.D, f.KEYBOARD_CODE.ARROW_RIGHT])) {
-        moveDir.y += -1;
+        moveDir.x += 1;
       }
       if (f.Keyboard.isPressedOne([f.KEYBOARD_CODE.Q, f.KEYBOARD_CODE.PAGE_UP])) {
         rotateDir += 1;

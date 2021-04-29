@@ -5,8 +5,8 @@ var PuzzleGame;
     class Avatar extends f.Node {
         constructor() {
             super("Avatar");
-            this.movementspeed = 20;
-            this.turnspeed = 20;
+            this.movementspeed = 10;
+            this.turnspeed = 100;
             this.addComponent(new f.ComponentTransform());
             this.mtxLocal.translateY(3);
             this.camera = new f.ComponentCamera();
@@ -17,8 +17,10 @@ var PuzzleGame;
             this.camera.mtxPivot.rotateX(10);
             this.addComponent(this.camera);
             this.body = new f.ComponentRigidbody(70, f.PHYSICS_TYPE.DYNAMIC, f.COLLIDER_TYPE.CAPSULE, f.PHYSICS_GROUP.DEFAULT);
+            this.body.rotationInfluenceFactor = new f.Vector3(0, 0, 0);
+            this.body.friction = 0.01;
             this.addComponent(this.body);
-            f.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, () => this.update);
+            f.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, event => this.update(event));
         }
         static get instance() {
             if (this._instance == undefined) {
@@ -30,16 +32,16 @@ var PuzzleGame;
             let rotateDir = 0;
             let moveDir = f.Vector2.ZERO();
             if (f.Keyboard.isPressedOne([f.KEYBOARD_CODE.W, f.KEYBOARD_CODE.ARROW_UP])) {
-                moveDir.x += 1;
-            }
-            if (f.Keyboard.isPressedOne([f.KEYBOARD_CODE.A, f.KEYBOARD_CODE.ARROW_LEFT])) {
                 moveDir.y += 1;
             }
+            if (f.Keyboard.isPressedOne([f.KEYBOARD_CODE.A, f.KEYBOARD_CODE.ARROW_LEFT])) {
+                moveDir.x -= 1;
+            }
             if (f.Keyboard.isPressedOne([f.KEYBOARD_CODE.S, f.KEYBOARD_CODE.ARROW_DOWN])) {
-                moveDir.x += -1;
+                moveDir.y -= 1;
             }
             if (f.Keyboard.isPressedOne([f.KEYBOARD_CODE.D, f.KEYBOARD_CODE.ARROW_RIGHT])) {
-                moveDir.y += -1;
+                moveDir.x += 1;
             }
             if (f.Keyboard.isPressedOne([f.KEYBOARD_CODE.Q, f.KEYBOARD_CODE.PAGE_UP])) {
                 rotateDir += 1;
