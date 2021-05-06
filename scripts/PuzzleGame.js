@@ -1,7 +1,5 @@
 "use strict";
-///<reference types="../libs/FudgeCore/FudgeCore.js"/>
 var PuzzleGame;
-///<reference types="../libs/FudgeCore/FudgeCore.js"/>
 (function (PuzzleGame) {
     var f = FudgeCore;
     window.addEventListener("load", init);
@@ -18,8 +16,9 @@ var PuzzleGame;
         f.Physics.settings.debugDraw = true;
         // setup graph
         let root = new f.Node("Root");
-        startScene.getChildrenByName("Cubes")[0].getChildren().forEach(cube => {
-            cube.addComponent(new f.ComponentRigidbody(100, f.PHYSICS_TYPE.DYNAMIC, f.COLLIDER_TYPE.CUBE));
+        PuzzleGame.cubes = startScene.getChildrenByName("Cubes")[0];
+        PuzzleGame.cubes.getChildren().forEach(cube => {
+            cube.addComponent(new f.ComponentRigidbody(20, f.PHYSICS_TYPE.DYNAMIC, f.COLLIDER_TYPE.CUBE));
         });
         startScene.getChildrenByName("Floor")[0].addComponent(new f.ComponentRigidbody(0, f.PHYSICS_TYPE.STATIC, f.COLLIDER_TYPE.CUBE));
         root.addChild(startScene);
